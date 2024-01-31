@@ -33,7 +33,12 @@
             "preLaunchTask": "docker-run: debug",
             "netCore": {
                 "appProject": "${workspaceFolder}/DemoApp1.csproj"
+            },            
+            // VP: Aggiunto per impostare url iniziale
+            "dockerServerReadyAction": {
+                "uriFormat": "%s://localhost:%s/swagger/index.html"
             }
+
         }
     ]
 }
