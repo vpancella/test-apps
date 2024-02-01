@@ -1,0 +1,79 @@
+<html>
+<head>
+</head>
+<body>
+Frontend1 page
+    <form id="my-form">
+        <input type="number" name="id" placeholder="id">
+        <input type="text" name="name" placeholder="name">
+        <button type="submit">Submit</button>
+    </form>
+    <div id="response-message"></div>
+
+    <script type="text/javascript">
+        //const apiUrl = 'http://localhost:55024/weatherforecast';
+        const apiUrl = 'http://localhost:55024/api/TodoItems';
+
+        const myForm = document.getElementById('my-form');
+        const responseMessage = document.getElementById('response-message');
+    
+        myForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+    
+            const formData = new FormData(myForm);
+    
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json;charset=UTF-8"
+                },
+                body: "{\"id\":" + formData.get("id") + 
+                                ",\"name\":" + "\"" + formData.get("name") + "\"" +
+                                ",\"isComplete\":true}",
+            };
+    
+            fetch(apiUrl, requestOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    responseMessage.textContent = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error:', error);
+                });
+        });
+
+        //
+        // Get items
+        //
+
+        const getItemsApiUrl = 'http://localhost:55024/api/TodoItems';
+
+        const requestOptions = {
+                method: 'GET',
+        };
+
+        fetch(getItemsApiUrl, requestOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    responseMessage.textContent = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error:', error);
+                });
+
+        </script>
+
+</body>
+</html>
