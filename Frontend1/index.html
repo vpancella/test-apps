@@ -11,8 +11,10 @@ Frontend1 page
     <div id="response-message"></div>
 
     <script type="text/javascript">
-        //const apiUrl = 'http://localhost:55024/weatherforecast';
-        const apiUrl = 'http://localhost:55024/api/TodoItems';
+        const apiBaseUrl = 'http://localhost:55033';
+        
+        //const apiUrl = apiBaseUrl + '/weatherforecast';
+        const apiUrl = apiBaseUrl + '/api/TodoItems';
 
         const myForm = document.getElementById('my-form');
         const responseMessage = document.getElementById('response-message');
@@ -52,7 +54,7 @@ Frontend1 page
         // Get items
         //
 
-        const getItemsApiUrl = 'http://localhost:55024/api/TodoItems';
+        const getItemsApiUrl = apiBaseUrl + '/api/TodoItems';
 
         const requestOptions = {
                 method: 'GET',
