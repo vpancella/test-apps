@@ -1,0 +1,124 @@
+#
+# Deploy backend app
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deploy1
+spec:
+  selector:
+    matchLabels:
+      app: demoapp1-pod
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: demoapp1-pod
+    spec:
+      containers:
+        - name: demoapp1-container
+          image: demoapp1:dev
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://+:80             
+--- 
+#
+# Backend service
+#
+apiVersion: v1
+kind: Service
+metadata:
+    name: demoapp1-service
+spec:
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+        app: demoapp1-pod
+    type: ClusterIP
+---
+#
+# Config ingress controller
+# for API backend service
+#
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: demoapp1-ingress
+spec:
+    rules:
+    - http:
+        paths:
+        - path: /api
+          pathType: Prefix
+          backend:
+            service:
+              name: demoapp1-service
+              port:
+                number: 80
+---                
+#
+# Frontend application deployment
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend1-deployment
+spec:
+  selector:
+    matchLabels:
+      app: frontend1-pod
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend1-pod
+    spec:
+      containers:
+        - name: frontend1-container
+          image: frontend1:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP           
+--- 
+#
+# Frontend service
+#
+apiVersion: v1
+kind: Service
+metadata:
+    name: frontend1-service
+spec:
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+        app: forntend1-pod
+    type: ClusterIP
+---
+#
+# Config ingress conroller
+# for frontend application files
+#
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: frontend1-ingress
+spec:
+    rules:
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: frontend1-service
+              port:
+                number: 80                    
