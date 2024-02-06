@@ -11,8 +11,9 @@ Frontend1 page
     <div id="response-message"></div>
 
     <script type="text/javascript">
-        const apiBaseUrl = 'http://localhost:55033';
-        
+
+        const apiBaseUrl = 'http://localhost';
+
         //const apiUrl = apiBaseUrl + '/weatherforecast';
         const apiUrl = apiBaseUrl + '/api/TodoItems';
 
@@ -46,7 +47,7 @@ Frontend1 page
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Error:', error);
+                    alert('Error URL: ' + apiUrl + "\n " + error);
                 });
         });
 
@@ -72,7 +73,7 @@ Frontend1 page
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Error:', error);
+                    alert('Error URL: ' + getItemsApiUrl + "\n " + error);
                 });
 
         </script>
