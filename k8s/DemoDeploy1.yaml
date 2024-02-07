@@ -101,7 +101,7 @@ spec:
       protocol: TCP
       targetPort: 80
     selector:
-        app: forntend1-pod
+        app: frontend1-pod
     type: ClusterIP
 ---
 #
