@@ -20,6 +20,49 @@ Frontend1 page
         const myForm = document.getElementById('my-form');
         const responseMessage = document.getElementById('response-message');
     
+        //
+        // Get All items
+        //
+
+        function getAllItems()
+        {
+            const getItemsApiUrl = apiBaseUrl + '/api/TodoItems';
+
+            const requestOptions = {
+                    method: 'GET',
+            };
+
+            fetch(getItemsApiUrl, requestOptions)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        var jsonData = JSON.parse(data);
+
+                        var sout = "";
+
+                        for (var i = 0; i < jsonData.length; i++) 
+                        {
+                            sout=sout + "<br/>" + jsonData[i].id + " - " + jsonData[i].name;
+                        }
+
+                        responseMessage.textContent = sout;
+                        responseMessage.innerHTML = sout;
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error URL: ' + getItemsApiUrl + "\n " + error);
+                    });
+        }
+
+        //
+        // Submit button
+        //
+
         myForm.addEventListener('submit', function (event) {
             event.preventDefault();
     
@@ -43,7 +86,9 @@ Frontend1 page
                     return response.text();
                 })
                 .then(data => {
-                    responseMessage.textContent = data;
+                    //responseMessage.textContent = data;
+                    //alert("Inserted: " + data);
+                    getAllItems();
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -51,32 +96,8 @@ Frontend1 page
                 });
         });
 
-        //
-        // Get items
-        //
+        getAllItems();
 
-        const getItemsApiUrl = apiBaseUrl + '/api/TodoItems';
-
-        const requestOptions = {
-                method: 'GET',
-        };
-
-        fetch(getItemsApiUrl, requestOptions)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    responseMessage.textContent = data;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error URL: ' + getItemsApiUrl + "\n " + error);
-                });
-
-        </script>
-
+    </script>
 </body>
 </html>
